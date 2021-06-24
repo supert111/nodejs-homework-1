@@ -1,7 +1,13 @@
-/*
- * Раскомментируй и запиши значение
- * const contactsPath = ;
- */
+const fs = require("fs").promises;
+const path = require('path');
+
+const file = fs.readFile("db/contacts.json", "utf-8");
+
+file.then(data => console.log(data));
+
+// Раскомментируй и запиши значение
+  const url = 'C:\Users\Админ\Documents\GitHub\nodejs-homework-1\contacts.js';
+  const contactsPath = path.win32.basename(url);
 
 // TODO: задокументировать каждую функцию
 function listContacts() {
