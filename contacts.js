@@ -1,27 +1,33 @@
 const fs = require("fs").promises;
+const { error } = require("console");
 const path = require('path');
 
-const file = fs.readFile("db/contacts.json", "utf-8");
-
-file.then(data => console.log(data));
-
 // Раскомментируй и запиши значение
-  const url = 'C:\Users\Админ\Documents\GitHub\nodejs-homework-1\contacts.js';
-  const contactsPath = path.win32.basename(url);
+const contactsPath = path.join("db", "contacts.json");
 
+const file = fs.readFile(contactsPath, "utf-8");
 // TODO: задокументировать каждую функцию
 function listContacts() {
+  file.then(data => data)
+    .catch(error => console.log(error));
     // ...твой код
   }
   
   function getContactById(contactId) {
-    // ...твой код
+    file.then(data => console.table(JSON.parse(data)));
+    //(data => data)
+    //console.log(data);
+    
+    // ...твой код .includes(contactId)
   }
   
   function removeContact(contactId) {
-    // ...твой код
+    // ...твой код node contacts.js
   }
   
   function addContact(name, email, phone) {
     // ...твой код
   }
+
+  listContacts();
+  getContactById();
