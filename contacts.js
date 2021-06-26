@@ -1,33 +1,71 @@
 const fs = require("fs").promises;
 const { error } = require("console");
 const path = require('path');
+const { v4 } = require('uuid');
 
 // Раскомментируй и запиши значение
-const contactsPath = path.join("db", "contacts.json");
+const contactsPath = path.join(__dirname, "db/contacts.json");
 
-const file = fs.readFile(contactsPath, "utf-8");
-// TODO: задокументировать каждую функцию
-function listContacts() {
-  file.then(data => data)
-    .catch(error => console.log(error));
-    // ...твой код
+// TODO: задокументировать каждую функцию 
+async function listContacts() {
+  try {
+    const data = await fs.readFile(contactsPath);
+    const contacts = JSON.parse(data);
+    return contacts;
+  } catch (error) {
+      error.message = "Cannot read contacts file";
+      throw error;
   }
-  
-  function getContactById(contactId) {
-    file.then(data => console.table(JSON.parse(data)));
-    //(data => data)
-    //console.log(data);
-    
-    // ...твой код .includes(contactId)
+}
+
+async function getContactById(contactId) {
+  try {
+    const allContacts = await listContacts();
+    const findContact = allContacts.find(item => item.id === contactId);
+    if(!findContact) {
+      throw new Error("Id incorrect");
+    }
+    return findContact;
+  } catch (error) {
+      throw error;
   }
+}
   
-  function removeContact(contactId) {
-    // ...твой код node contacts.js
+async function removeContact(contactId) {
+  try {
+    const allContacts = await listContacts();
+    const index = allContacts.findIndex(item => item.id === contactId);
+    if(index === -1){
+        throw new Error("contactId incorrect");
+    }
+    const delContact = allContacts.filter(item => item.id !== contactId);
+    const str = JSON.stringify(delContact);
+    await fs.writeFile(contactsPath, str);
+  } catch (error) {
+      throw error;     
   }
+}
   
-  function addContact(name, email, phone) {
-    // ...твой код
+async function addContact(name, email, phone) {
+  const newContact = {name, email, phone, id: v4()};
+  const allContacts = await listContacts();
+  try {
+    const newContacts = [...allContacts, newContact];
+    const str = JSON.stringify(newContacts);
+    await fs.writeFile(contactsPath, str);
+    return newContact;
+  } catch (error) {
+      throw error;      
   }
 
-  listContacts();
-  getContactById();
+}
+
+module.exports = {
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
+};
+  
+  
+  
