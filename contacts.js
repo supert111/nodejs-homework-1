@@ -11,6 +11,7 @@ async function listContacts() {
   try {
     const data = await fs.readFile(contactsPath);
     const contacts = JSON.parse(data);
+    console.table(contacts);
     return contacts;
   } catch (error) {
       error.message = "Cannot read contacts file";
@@ -21,10 +22,11 @@ async function listContacts() {
 async function getContactById(contactId) {
   try {
     const allContacts = await listContacts();
-    const findContact = allContacts.find(item => item.id === contactId);
+    const findContact = allContacts.find(item => item.id.toString() === contactId.toString());
     if(!findContact) {
       throw new Error("Id incorrect");
     }
+    console.log(findContact);
     return findContact;
   } catch (error) {
       throw error;
@@ -34,13 +36,14 @@ async function getContactById(contactId) {
 async function removeContact(contactId) {
   try {
     const allContacts = await listContacts();
-    const index = allContacts.findIndex(item => item.id === contactId);
+    const index = allContacts.findIndex(item => item.id.toString() === contactId.toString());
     if(index === -1){
         throw new Error("contactId incorrect");
     }
-    const delContact = allContacts.filter(item => item.id !== contactId);
+    const delContact = allContacts.filter(item => item.id.toString() !== contactId.toString());
     const str = JSON.stringify(delContact);
     await fs.writeFile(contactsPath, str);
+    console.log(`ContactId number ${contactId} deleted`);
   } catch (error) {
       throw error;     
   }
@@ -53,11 +56,11 @@ async function addContact(name, email, phone) {
     const newContacts = [...allContacts, newContact];
     const str = JSON.stringify(newContacts);
     await fs.writeFile(contactsPath, str);
+    console.log(newContact);
     return newContact;
   } catch (error) {
       throw error;      
   }
-
 }
 
 module.exports = {

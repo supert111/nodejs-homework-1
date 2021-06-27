@@ -1,5 +1,17 @@
 # nodejs-homework-1
 
+# listContacts
+https://i.ibb.co/w4zn7pm/option-list.jpg
+
+# getContactById
+https://i.ibb.co/hFjVMXW/get-Contact-By-Id.jpg
+
+# addContact
+https://i.ibb.co/wcn1LnH/add-Contact.jpg
+
+# removeContact
+https://i.ibb.co/wYn1TLS/remove-Contact.jpg
+
 # Домашнее задание 1
 
 ## Шаг 1
